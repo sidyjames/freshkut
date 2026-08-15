@@ -178,7 +178,7 @@ export default function LandingView() {
 
           {/* Titre principal. La deuxième ligne est en vert lime. */}
           <h1 className="mt-7 max-w-4xl text-5xl font-black uppercase leading-[0.93] tracking-normal text-white sm:text-6xl lg:text-[72px]">
-            TROUVE TON barber
+            TROUVE TON BARBER
             <span className="block text-lime-400">AUTOUR DE TOI.</span>
           </h1>
 
@@ -296,7 +296,7 @@ export default function LandingView() {
                 POUR LES CLIENTS
               </p>
 
-              {/* Titre principal de la section clients, avec la même taille que "Comment ça marche". */}
+              {/* Titre principal de la section clients */}
               <h2 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
                 Les barbers les mieux notés
               </h2>
@@ -372,7 +372,7 @@ export default function LandingView() {
         </div>
       </section>
 
-      {/* Section pro : elle parle aux barbers qui veulent rejoindre FreshKut. */}
+      {/* Section pro : parle aux barbers qui veulent rejoindre FreshKut. */}
       <section
         id="pour-les-barbers"
         className="bg-[#09090b] px-5 py-14 sm:px-8 lg:px-10 lg:py-16"
