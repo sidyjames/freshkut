@@ -1,7 +1,14 @@
 'use client'; // On indique que ce composant est un composant client, car il utilise des hooks ou des fonctionnalités côté client.
 
 // On importe les icônes dont on a besoin depuis lucide-react.
-import { ArrowRight, MapPin, Scissors, Search, Zap } from 'lucide-react';
+import {
+  ArrowRight,
+  CalendarCheck,
+  MapPin,
+  Scissors,
+  Search,
+  Zap,
+} from 'lucide-react';
 
 // Ici on range les liens de la navbar dans un tableau.
 // Comme ça, on peut les afficher plus bas avec un .map().
@@ -9,6 +16,29 @@ const navLinks = [
   'Pour les clients',
   'Pour les barbers',
   'Comment ça marche',
+];
+
+// Ici on prépare les 3 étapes de la section "Comment ça marche".
+// Chaque objet représente une carte : numéro, icône, titre et texte.
+const steps = [
+  {
+    number: '01',
+    icon: MapPin,
+    title: 'Géolocalise',
+    description: 'Trouve les barbiers disponibles près de chez toi ou à domicile.',
+  },
+  {
+    number: '02',
+    icon: Scissors,
+    title: 'Choisis ton style',
+    description: 'Consulte le portfolio photo, les avis et les prestations.',
+  },
+  {
+    number: '03',
+    icon: CalendarCheck,
+    title: 'Réserve & Paye',
+    description: 'Bloque ton créneau instantanément avec acompte anti-no-show.',
+  },
 ];
 
 // Ceci est le composant principal de la landing page.
@@ -117,6 +147,67 @@ export default function LandingView() {
           <div className="mt-7 inline-flex items-center gap-2 text-xs font-medium text-zinc-500">
             <Zap className="size-3.5 fill-lime-400 text-lime-400" strokeWidth={2.5} />
             Réservation instantanée • Acompte anti-no-show
+          </div>
+        </div>
+      </section>
+
+      {/* Section suivante : elle explique le fonctionnement en 3 étapes simples. */}
+      <section
+        id="comment-ca-marche"
+        className="relative overflow-hidden bg-[#09090b] px-5 py-24 sm:px-8 lg:px-10 lg:py-32"
+      >
+        {/* Grille subtile en haut de la section, comme dans le visuel. */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[linear-gradient(to_right,rgba(255,255,255,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.055)_1px,transparent_1px)] bg-[size:38px_38px] opacity-80" />
+
+        {/* Dégradé pour fondre doucement la grille dans le fond noir. */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-52 bg-gradient-to-b from-transparent to-[#09090b]" />
+
+        {/* Conteneur qui limite la largeur du contenu au centre de la page. */}
+        <div className="relative z-10 mx-auto max-w-7xl">
+          {/* En-tête de la section avec le petit label vert et le titre. */}
+          <div className="text-center">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-lime-400">
+              SIMPLE & RAPIDE
+            </p>
+            <h2 className="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Comment ça marche
+            </h2>
+          </div>
+
+          {/* Grille des cartes : 1 colonne sur mobile, 3 colonnes sur grand écran. */}
+          <div className="mt-20 grid gap-6 lg:grid-cols-3">
+            {steps.map((step) => {
+              // On récupère l'icône de l'étape dans une variable avec une majuscule.
+              const StepIcon = step.icon;
+
+              return (
+                // Carte d'une étape.
+                <article
+                  key={step.number}
+                  className="rounded-[28px] border border-white/10 bg-zinc-900/55 p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:p-10 lg:min-h-[310px]"
+                >
+                  {/* Numéro de l'étape en gris. */}
+                  <p className="font-mono text-2xl font-black text-zinc-500">
+                    {step.number}
+                  </p>
+
+                  {/* Carré vert sombre avec l'icône lime. */}
+                  <div className="mt-12 flex size-24 items-center justify-center rounded-[22px] bg-lime-400/10 text-lime-400">
+                    <StepIcon className="size-11" strokeWidth={2.8} />
+                  </div>
+
+                  {/* Titre de la carte. */}
+                  <h3 className="mt-12 text-3xl font-black tracking-tight text-white">
+                    {step.title}
+                  </h3>
+
+                  {/* Description de la carte. */}
+                  <p className="mt-6 max-w-md text-xl font-medium leading-9 text-zinc-400">
+                    {step.description}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
