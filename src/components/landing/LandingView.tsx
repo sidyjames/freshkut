@@ -13,6 +13,7 @@ import {
   Star,
   Zap,
 } from 'lucide-react';
+import { useState } from 'react';
 
 // Ici on range les liens de la navbar dans un tableau.
 // Comme ça, on peut les afficher plus bas avec un .map().
@@ -32,8 +33,25 @@ const navLinks = [
 ];
 
 // Filtres rapides affichés dans le Hero.
-// Pour l'instant ils sont visuels, mais ils pourront piloter la recherche plus tard.
-const quickFilters = ['Tous', 'Barber', 'Coiffure Femme', 'Domicile'];
+// Chaque filtre a un id pour pouvoir être sélectionné avec React.
+const quickFilters = [
+  {
+    id: 'all',
+    label: 'Tous',
+  },
+  {
+    id: 'barber',
+    label: 'Barber',
+  },
+  {
+    id: 'female',
+    label: 'Coiffure Femme',
+  },
+  {
+    id: 'home',
+    label: 'Domicile',
+  },
+];
 
 // Les 3 étapes de la section "Comment ça marche".
 // Chaque objet représente une carte : numéro, icône, titre et texte.
@@ -70,6 +88,8 @@ const topBarbers = [
       'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1200&q=80',
     avatar:
       'https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=160&q=80',
+    category: 'barber',
+    isHome: false,
   },
   {
     name: 'Diego Cuts',
@@ -80,16 +100,20 @@ const topBarbers = [
       'https://images.unsplash.com/photo-1512690459411-b9245aed614b?auto=format&fit=crop&w=1200&q=80',
     avatar:
       'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=160&q=80',
+    category: 'barber',
+    isHome: true,
   },
   {
-    name: "Liam O'Brien",
-    shop: 'The Barber Room',
+    name: 'Maya Braids',
+    shop: 'Studio Glow',
     district: 'Paris 3e',
     rating: '4.7',
     image:
       'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1200&q=80',
     avatar:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=160&q=80',
+    category: 'female',
+    isHome: false,
   },
 ];
 
@@ -115,6 +139,22 @@ const proFeatures = [
 
 // Ceci est le composant principal de la landing page.
 export default function LandingView() {
+  // Catégorie sélectionnée dans les filtres rapides du Hero.
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Liste filtrée des pros affichés dans la section clients.
+  const filteredBarbers = topBarbers.filter((barber) => {
+    if (selectedCategory === 'all') {
+      return true;
+    }
+
+    if (selectedCategory === 'home') {
+      return barber.isHome;
+    }
+
+    return barber.category === selectedCategory;
+  });
+
   return (
     // Le main prend toute la hauteur de l'écran et met le fond en noir mat.
     <main className="min-h-screen overflow-hidden bg-zinc-950 text-white">
@@ -195,21 +235,22 @@ export default function LandingView() {
           {/* Filtres rapides pour chercher par type de prestation ou de pro. */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
             {quickFilters.map((filter) => {
-              // Le filtre "Tous" est actif par défaut.
-              const isActive = filter === 'Tous';
+              // On vérifie si ce filtre est celui sélectionné.
+              const isActive = selectedCategory === filter.id;
 
               return (
                 // Petit bouton pill cliquable pour filtrer la recherche.
                 <button
-                  key={filter}
+                  key={filter.id}
+                  onClick={() => setSelectedCategory(filter.id)}
                   type="button"
                   className={
                     isActive
-                      ? 'rounded-full bg-lime-400 px-4 py-2 text-xs font-black text-zinc-950 shadow-[0_0_18px_rgba(163,230,53,0.22)]'
-                      : 'rounded-full border border-zinc-800 bg-zinc-950/80 px-4 py-2 text-xs font-bold text-zinc-300 transition-colors hover:border-lime-400/50 hover:text-white'
+                      ? 'rounded-full bg-lime-400 px-4 py-2 text-xs font-bold text-black shadow-[0_0_15px_rgba(163,230,53,0.3)]'
+                      : 'rounded-full border border-zinc-800 bg-zinc-900/80 px-4 py-2 text-xs font-bold text-zinc-300 transition-colors hover:border-zinc-700 hover:text-white'
                   }
                 >
-                  {filter}
+                  {filter.label}
                 </button>
               );
             })}
@@ -341,7 +382,7 @@ export default function LandingView() {
 
           {/* Grille des cartes barbers : 1 colonne mobile, 3 colonnes desktop. */}
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
-            {topBarbers.map((barber) => (
+            {filteredBarbers.map((barber) => (
               // Chaque carte est un lien vers la PWA client.
               <a
                 key={barber.name}
