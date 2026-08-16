@@ -22,7 +22,7 @@ const navLinks = [
     href: '#pour-les-clients',
   },
   {
-    label: 'Pour les barbers',
+    label: 'Pour les coiffeurs',
     href: '#pour-les-barbers',
   },
   {
@@ -30,6 +30,10 @@ const navLinks = [
     href: '#comment-ca-marche',
   },
 ];
+
+// Filtres rapides affichés dans le Hero.
+// Pour l'instant ils sont visuels, mais ils pourront piloter la recherche plus tard.
+const quickFilters = ['Tous', 'Barber', 'Coiffure Femme', 'Domicile'];
 
 // Les 3 étapes de la section "Comment ça marche".
 // Chaque objet représente une carte : numéro, icône, titre et texte.
@@ -173,23 +177,46 @@ export default function LandingView() {
           {/* Petit tag en haut du titre. */}
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-zinc-950/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-wide text-zinc-400 shadow-[0_0_35px_rgba(163,230,53,0.08)]">
             <span className="size-1.5 rounded-full bg-lime-400 shadow-[0_0_10px_rgba(163,230,53,0.9)]" />
-            LA RÉFÉRENCE DES BARBERS LOCAUX
+            LA RÉFÉRENCE DES PROS DE LA COIFFURE
           </div>
 
-          {/* Titre principal. La deuxième ligne est en vert lime. */}
+          {/* Titre principal. La dernière partie est en vert lime. */}
           <h1 className="mt-7 max-w-4xl text-5xl font-black uppercase leading-[0.93] tracking-normal text-white sm:text-6xl lg:text-[72px]">
-            TROUVE TON BARBER
+            TROUVE TA COIFFEUSE OU BARBER
             <span className="block text-lime-400">AUTOUR DE TOI.</span>
           </h1>
 
           {/* Sous-titre explicatif sous le gros titre. */}
           <p className="mt-7 max-w-2xl text-base font-medium leading-7 text-zinc-400 sm:text-lg">
-            Réserve ton dégradé, tes contours ou ta barbe en quelques clics
-            auprès des meilleurs barbers locaux.
+            Réserve ton dégradé, ton lissage, ton brushing ou tes tresses en
+            quelques clics auprès des meilleurs pros locaux.
           </p>
 
+          {/* Filtres rapides pour chercher par type de prestation ou de pro. */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+            {quickFilters.map((filter) => {
+              // Le filtre "Tous" est actif par défaut.
+              const isActive = filter === 'Tous';
+
+              return (
+                // Petit bouton pill cliquable pour filtrer la recherche.
+                <button
+                  key={filter}
+                  type="button"
+                  className={
+                    isActive
+                      ? 'rounded-full bg-lime-400 px-4 py-2 text-xs font-black text-zinc-950 shadow-[0_0_18px_rgba(163,230,53,0.22)]'
+                      : 'rounded-full border border-zinc-800 bg-zinc-950/80 px-4 py-2 text-xs font-bold text-zinc-300 transition-colors hover:border-lime-400/50 hover:text-white'
+                  }
+                >
+                  {filter}
+                </button>
+              );
+            })}
+          </div>
+
           {/* Barre de recherche avec l'icône localisation, le champ et le bouton. */}
-          <form className="mt-9 flex w-full max-w-[550px] items-center gap-2 rounded-full border border-white/10 bg-zinc-900/80 p-2 pl-5 shadow-[0_18px_60px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur">
+          <form className="mt-4 flex w-full max-w-[550px] items-center gap-2 rounded-full border border-white/10 bg-zinc-900/80 p-2 pl-5 shadow-[0_18px_60px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur">
             {/* Icône de localisation à gauche du champ. */}
             <MapPin className="size-5 shrink-0 text-lime-400" strokeWidth={2.4} />
 
@@ -197,7 +224,7 @@ export default function LandingView() {
             <input
               aria-label="Localisation"
               className="min-w-0 flex-1 bg-transparent px-2 text-sm font-medium text-white outline-none placeholder:text-zinc-500"
-              placeholder="Ex: Paris 11e, Lyon, Marseille..."
+              placeholder="Ex: Paris 11e, Lissage, Dégradé, Braids..."
               type="text"
             />
 
@@ -207,7 +234,7 @@ export default function LandingView() {
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-lime-400 px-6 py-3 text-xs font-black uppercase text-zinc-950 shadow-[0_0_24px_rgba(163,230,53,0.24)] transition-transform hover:scale-[1.02]"
             >
               <Search className="size-4" strokeWidth={3} />
-              <span className="hidden sm:inline">Trouver mon barber</span>
+              <span className="hidden sm:inline">Trouver un salon</span>
             </button>
           </form>
 
@@ -298,7 +325,7 @@ export default function LandingView() {
 
               {/* Titre principal de la section clients */}
               <h2 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
-                Les barbers les mieux notés
+                Les meilleurs pros près de chez toi
               </h2>
             </div>
 
@@ -307,7 +334,7 @@ export default function LandingView() {
               href="/app"
               className="inline-flex items-center gap-2 text-base font-black text-lime-400 transition-colors hover:text-lime-300"
             >
-              Voir tous les barbers
+              Voir tous les coiffeurs
               <ArrowRight className="size-4" strokeWidth={3} />
             </a>
           </div>
@@ -388,7 +415,7 @@ export default function LandingView() {
 
             {/* Titre principal de la section pro. */}
             <h2 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
-              Vous êtes barber ?
+              Vous êtes coiffeur ?
             </h2>
 
             {/* Texte qui explique la promesse pour les barbers. */}
@@ -460,7 +487,7 @@ export default function LandingView() {
               Pour les clients
             </a>
             <a href="#pour-les-barbers" className="transition-colors hover:text-white">
-              Pour les barbers
+              Pour les coiffeurs
             </a>
             <a href="#comment-ca-marche" className="transition-colors hover:text-white">
               Comment ça marche
